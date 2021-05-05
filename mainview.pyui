@@ -5,7 +5,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{133, 96}, {60, 60}}",
+        "frame" : "{{133, 121}, {60, 60}}",
         "class" : "Button",
         "attributes" : {
           "action" : "",
@@ -19,24 +19,6 @@
           "font_bold" : false,
           "font_size" : 15,
           "name" : "start_button"
-        },
-        "selected" : false
-      },
-      {
-        "nodes" : [
-
-        ],
-        "frame" : "{{30, 6}, {260, 21}}",
-        "class" : "View",
-        "attributes" : {
-          "border_width" : 2,
-          "flex" : "",
-          "frame" : "{{110, 190}, {100, 100}}",
-          "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
-          "corner_radius" : 0,
-          "class" : "View",
-          "uuid" : "3A0825D8-CFF9-4E84-9C60-216DCCB86B3C",
-          "name" : "background"
         },
         "selected" : false
       },
@@ -84,7 +66,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{121, 163}, {82, 16}}",
+        "frame" : "{{123, 192}, {82, 16}}",
         "class" : "Label",
         "attributes" : {
           "flex" : "WHLRTB",
@@ -105,7 +87,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{31, 27}, {73, 61}}",
+        "frame" : "{{31, 12}, {73, 61}}",
         "class" : "Label",
         "attributes" : {
           "flex" : "WHTB",
@@ -125,7 +107,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{84, 27}, {109, 61}}",
+        "frame" : "{{84, 12}, {109, 61}}",
         "class" : "Label",
         "attributes" : {
           "flex" : "WHTB",
@@ -189,15 +171,15 @@
         "attributes" : {
           "flex" : "WH",
           "data_source_items" : "Row 1\nRow 2\nRow 3",
-          "name" : "results_table",
+          "uuid" : "983A6452-458D-41DC-A961-21AD20A4C464",
           "frame" : "{{60, 140}, {200, 200}}",
           "data_source_number_of_lines" : 1,
           "background_color" : "RGBA(1.0, 1.0, 1.0, 1.0)",
           "class" : "TableView",
+          "data_source_delete_enabled" : false,
           "data_source_font_size" : 17,
-          "uuid" : "983A6452-458D-41DC-A961-21AD20A4C464",
-          "row_height" : 36,
-          "data_source_delete_enabled" : false
+          "name" : "results_table",
+          "row_height" : 36
         },
         "selected" : false
       },
@@ -205,7 +187,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{184, 27}, {65, 61}}",
+        "frame" : "{{184, 12}, {65, 61}}",
         "class" : "Label",
         "attributes" : {
           "flex" : "WHTB",
@@ -225,7 +207,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{227, 27}, {68, 61}}",
+        "frame" : "{{227, 12}, {68, 61}}",
         "class" : "Label",
         "attributes" : {
           "flex" : "WHTB",
@@ -245,7 +227,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{31, 90}, {264, 108}}",
+        "frame" : "{{31, 75}, {264, 105}}",
         "class" : "TextView",
         "attributes" : {
           "uuid" : "2E78B5C8-60A3-47BB-B133-AE88B8DBF078",
@@ -268,7 +250,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{232, 96}, {59, 59}}",
+        "frame" : "{{232, 121}, {59, 59}}",
         "class" : "Button",
         "attributes" : {
           "flex" : "WHLRTB",
@@ -287,7 +269,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{38, 96}, {53, 73}}",
+        "frame" : "{{38, 116}, {53, 73}}",
         "class" : "ImageView",
         "attributes" : {
           "flex" : "WHLRTB",
@@ -303,7 +285,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{90, 124}, {10, 10}}",
+        "frame" : "{{90, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -322,7 +304,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{100, 124}, {10, 10}}",
+        "frame" : "{{100, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -341,7 +323,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{110, 124}, {10, 10}}",
+        "frame" : "{{110, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -360,7 +342,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{120, 124}, {10, 10}}",
+        "frame" : "{{120, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -379,7 +361,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{130, 124}, {10, 10}}",
+        "frame" : "{{130, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -398,7 +380,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{190, 124}, {10, 10}}",
+        "frame" : "{{190, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -417,7 +399,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{200, 124}, {10, 10}}",
+        "frame" : "{{200, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -436,7 +418,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{210, 124}, {10, 10}}",
+        "frame" : "{{210, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -455,7 +437,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{220, 124}, {10, 10}}",
+        "frame" : "{{220, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -474,7 +456,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{230, 124}, {10, 10}}",
+        "frame" : "{{230, 150}, {10, 10}}",
         "class" : "Button",
         "attributes" : {
           "alpha" : 0,
@@ -493,7 +475,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{125, 149}, {80, 16}}",
+        "frame" : "{{125, 180}, {80, 16}}",
         "class" : "Button",
         "attributes" : {
           "uuid" : "E761B72C-CEB3-42A0-90D7-3DEBDFDA1D80",
@@ -517,11 +499,11 @@
     "frame" : "{{0, 0}, {320, 480}}",
     "class" : "View",
     "attributes" : {
-      "tint_color" : "RGBA(1.000000,0.274510,0.274510,1.000000)",
-      "enabled" : true,
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(0.108491,0.108491,0.108491,1.000000)",
+      "enabled" : true,
+      "tint_color" : "RGBA(1.000000,0.274510,0.274510,1.000000)",
       "name" : "",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false
