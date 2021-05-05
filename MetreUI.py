@@ -32,14 +32,14 @@ from ble_file_uploader import BleUploader
 from lib.UISummaryDelegate import SummaryDelegate
 from lib.UIBleDelegate import BleDelegate, BokehDelegate, loading_html, updating_html, nolog_html, getPlot
 from lib.UIHelpDelegate import HelpDelegate
-from lib.UIFeatures import ProgressBar, ConsoleAlert
+from lib.UIFeatures import ConsoleAlert
 from lib.UITableDelegate import ResultsTable
 from app_single_launch import AppSingleLaunch
 
 # Using single launch lock as suggested in
 # https://forum.omz-software.com/topic/5440/prevent-duplicate-launch-from-shortcut/7
 
-APP_VERSION = 'v0.19'
+APP_VERSION = 'v0.20'
 
 
 
@@ -76,12 +76,6 @@ class MainView(ui.View):
         dev_icon_path = 'images/MetreAceDev.png'
         self.instr_icon.image = ui.Image.named(dev_icon_path)
         self.calc_icon = self.v['button1']
-                
-        # Status bar
-        self.fillbar = self.v['fill_bar']
-        self.fillbar_outline = self.v['background']
-        # self.fillbar.x = 31.1
-        self.fullbar = self.fillbar_outline.width
 
         # Instr chevrons
         self.d0 = self.v['dot0']
@@ -203,10 +197,7 @@ class MainView(ui.View):
 # This sets up the bluetooth upload
     @ui.in_background
     def bleStatus(self):
-        self.progress_bar = ProgressBar(self.fillbar, self.fillbar_outline, self.fullbar)
         self.star_button.alpha = 0.5
-        self.progress_bar.fillbar_outline_.alpha = 1
-        self.fillbar.alpha = 1
         loaded = False
         self.connect_button.alpha = 0
         ble_icon_path = 'images/ble_disconnected.png'
@@ -214,7 +205,7 @@ class MainView(ui.View):
     
         if not loaded:
             self.ble_status.text= 'Connecting...'
-            ble_file_uploader = BleUploader(self.progress_bar, self.app_console, self.ble_status_icon, self.v, APP_VERSION, DEBUG)
+            ble_file_uploader = BleUploader(self.app_console, self.ble_status_icon, self.v, APP_VERSION, DEBUG)
             ready_status = ble_file_uploader.execute_transfer()
             
             if ready_status:
@@ -235,8 +226,6 @@ class MainView(ui.View):
                     self.ble_status_icon.image = ui.Image.named(ble_icon_path)
                     self.ble_status.text= 'CONNECT'
                     self.startbutton.alpha = 1
-                    self.progress_bar.fillbar_outline_.alpha = 0
-                    self.fillbar.alpha = 0
                 else:
                     if DEBUG:
                         print("UI senses it is disconnected")
@@ -247,8 +236,6 @@ class MainView(ui.View):
                     self.ble_status_icon.background_color = 'black'
                     self.ble_status.text= 'CONNECT'
                     self.star_button.alpha = 1
-                    self.progress_bar.fillbar_outline_.alpha = 0
-                    self.fillbar.alpha = 0
                     
                 ### THIS IS WHERE YOU SHOULD GIVE THE OPTION TO CONNECT AGAIN
                 self.d0.alpha = 0 
@@ -332,16 +319,13 @@ class MainView(ui.View):
     def main(self):
         self.ble_status.alpha = 0.5 
         self.calc_icon.apha = 0.1
-        self.main_progress_bar =ProgressBar(self.fillbar, self.fillbar_outline, self.fullbar)
         global process_done
         process_done = False
         
         def animate_bar():
-            cloud_progress_bar = ProgressBar(self.fillbar, self.fillbar_outline, self.fullbar)
             for i in range(0, 200):
                 if process_done:
                     break
-                cloud_progress_bar.update_progress_bar(0.002*i + 0.15)
                 ui.animate(self.blink, 0.1)
                 if DEBUG: print(i)
                 time.sleep(0.2)
@@ -384,7 +368,6 @@ class MainView(ui.View):
                    if DEBUG:
                        print('Beginning Analysis of test from ' + dt)
                    json_path = source_path + '/'+ file
-                   self.main_progress_bar.update_progress_bar(0)
                    process_done = False
                    with open(json_path) as f:
                        data_dict = json.load(f)
@@ -393,7 +376,6 @@ class MainView(ui.View):
                        url = 'https://us-central1-metre3-1600021174892.cloudfunctions.net/metre-7500'
                        data_dict_to_send['App_Version'] = APP_VERSION
                        json_text = json.dumps(data_dict_to_send)
-                       self.main_progress_bar.update_progress_bar(0.1)
                        self.app_console.text = 'Uploading and interpreting results from test from your ' + dt +' test. This may take a few moments...'
                        pt = threading.Thread(target = animate_bar) # don't do this unless u start a parallel thread to send request
                        pt.start()
@@ -412,7 +394,6 @@ class MainView(ui.View):
                        self.app_console.text = 'Results from ' + dt + ': ' + response_json['pred_content']
                        if DEBUG:
                             print(response_json['pred_content'])
-                       self.main_progress_bar.update_progress_bar(0.92)
                        newlog = {'Etime': response_json['refnum'],
                                   'DateTime': response_json['DateTime'],
                                   'Acetone': float(response_json['Acetone']),
@@ -425,10 +406,8 @@ class MainView(ui.View):
                        self.getData()
                        if DEBUG:
                             print(self.acetone)
-                       self.main_progress_bar.update_progress_bar(0.95)
                        self.results_table = self.v['results_table']
                        self.restable_inst.update_table(self.acetone, self.etime)                        
-                       self.main_progress_bar.update_progress_bar(1)
                    except:
                        self.app_console.text = 'The test from ' + dt + ' could not be processed.'
                        time.sleep(1)
@@ -438,9 +417,6 @@ class MainView(ui.View):
                time.sleep(1)
         self.getData()
         self.restable_inst.update_table(self.acetone, self.etime)                                     
-        self.fillbar.alpha =0
-        self.fillbar_outline.alpha = 0
-        self.main_progress_bar.update_progress_bar(0)
         self.d5.alpha = 0
         self.d6.alpha = 0
         self.d7.alpha = 0
