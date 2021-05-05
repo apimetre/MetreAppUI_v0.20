@@ -1,4 +1,3 @@
-  
 # Python imports
 import json
 import shutil
@@ -12,8 +11,7 @@ import ui
 
 
 class FileConverter():
-    def __init__(self, progress_bar_, console_box_, bad_transfers):
-        self.progress_bar_ = progress_bar_
+    def __init__(self, console_box_, bad_transfers):
         self.console_box_ = console_box_
         self.bad_transfers = bad_transfers
         
@@ -37,8 +35,6 @@ class FileConverter():
         all_uploads = os.listdir(self.file_source)
         for file in all_uploads:
             # Current fill 
-            current_percent_fill = self.progress_bar_.fillbar_.width/ self.progress_bar_.fullbar_
-            self.progress_bar_.update_progress_bar((all_uploads.index(file) + 1)*.01 + current_percent_fill)
             if 'bin' in file:
                 id_num, ext = file.split('.')
                 fsize = os.stat(self.file_source + '/' + file).st_size
@@ -77,8 +73,6 @@ class FileConverter():
                     # Move processed bin and json out of directory
                     shutil.move(self.file_source + '/'+ file, self.file_dest + '/' + file)
                     shutil.move(metadata_json, self.file_dest + '/' + id_num + '.json')
-                    current_percent_fill = self.progress_bar_.fillbar_.width/ self.progress_bar_.fullbar_
-                    self.progress_bar_.update_progress_bar((all_uploads.index(file) + 1)*.01 + current_percent_fill)
                     with open(export_fpath, 'w') as outfile:
                         json.dump(mdata_dict, outfile)
                 except:
