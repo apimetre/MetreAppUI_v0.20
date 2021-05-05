@@ -28,8 +28,7 @@ from lib.UIFeatures import ConsoleAlert
 
 
 class BleUploader():
-    def __init__(self, progress_bar_, console_box_, ble_status_icon_, v_, version_id, debug_status):
-        self.progress_bar_ = progress_bar_
+    def __init__(self, console_box_, ble_status_icon_, v_, version_id, debug_status):
         self.console_box_ = console_box_
         self.ble_status_icon_ = ble_status_icon_
         self.v_ = v_
@@ -122,7 +121,6 @@ class BleUploader():
         cb.set_central_delegate(self.py_ble_uart)
         cb.scan_for_peripherals()
         self.event_queue.append({'src':'py_ble', 'ack':'cb', 'ok':True,  'status':'STATUS_BLE_SCANNING_FOR_PERIPHERALS'})
-        self.progress_bar_.update_progress_bar(0)
         while not self.py_ble_uart.peripheral:
             if len(self.event_queue):
                 event = self.event_queue.pop()
@@ -164,7 +162,7 @@ class BleUploader():
             return int(tz_factor)
         
                     
-        def cmd_fn(out_msg, cmd_type, show_progress = False, cmd_counter = 0, to_counter = 0, warning = False, to_max = 80):
+        def cmd_fn(out_msg, cmd_type, cmd_counter = 0, to_counter = 0, warning = False, to_max = 80):
             global in_buf
             in_buf = (out_msg + '\n').encode('utf-8')
             
@@ -175,14 +173,7 @@ class BleUploader():
                     #ui.animate(self.blink, 0.1)
                 
                     try:  
-                        #ui.animate(self.blink, 0.1)
-                        if show_progress:
-                            if self.progress_bar_.fillbar_.width < 0.8:
-                                self.progress_bar_.update_progress_bar(cmd_counter*.005)
-                                ui.animate(self.blink,0.1)
-                            else:
-                                self.progress_bar_.update_progress_bar(cmd_counter*.0025)
-
+                        ui.animate(self.blink, 0.1)
                     # Sends commands to buffer
                         if len(in_buf):
                             if self.DEBUG:
@@ -264,7 +255,7 @@ class BleUploader():
             counter = 0
             time.sleep(0.2)
             connect_msg_txt =json.dumps({"cmd":"set_ble_state","active":True})
-            cmd_fn(connect_msg_txt, "set_ble_state", show_progress = False)
+            cmd_fn(connect_msg_txt, "set_ble_state")
 
             ble_icon_path = 'images/ble_connected.png'
             self.ble_status_icon_.image = ui.Image.named(ble_icon_path)
@@ -315,7 +306,7 @@ class BleUploader():
             time.sleep(0.5)
             
             out_msg_text =json.dumps({"cmd":"oled", "text":"Uploading..."})
-            cmd_fn(out_msg_text, "oled", show_progress = False, warning = True)
+            cmd_fn(out_msg_text, "oled", warning = True)
                                       
             FLAG = False
             file_wrongsize = []
@@ -327,7 +318,7 @@ class BleUploader():
                     if self.DEBUG:
                         print('I SEE ' + file)
                     out_msg_del_e =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
-                    r_del, counter = cmd_fn(out_msg_del_e, "remove", show_progress = False, warning = True, to_max = 150)
+                    r_del, counter = cmd_fn(out_msg_del_e, "remove", warning = True, to_max = 150)
                 elif file.endswith(('.bin', '.json')):
                     if "device" in file:
                         if self.DEBUG:
@@ -360,10 +351,6 @@ class BleUploader():
                         result_resp = []
                         while self.py_ble_uart.peripheral:
                             try:
-                                if self.progress_bar_.fillbar_.width < 0.8:
-                                    self.progress_bar_.update_progress_bar(counter*.005)
-                                else:
-                                    self.progress_bar_.update_progress_bar(counter*.0025)
                                 if len(in_buf):
                                     in_chars = in_buf
                                     self.py_ble_buffer.buffer(in_chars)
@@ -431,7 +418,7 @@ class BleUploader():
                                         if self.DEBUG:
                                             print('upload and file size are the same size')
                                         out_msg_del =json.dumps({"cmd": "remove", "path":"/sd/" + file})
-                                        r_del, counter = cmd_fn(out_msg_del, "remove", show_progress = True, cmd_counter = counter, warning = True)  
+                                        r_del, counter = cmd_fn(out_msg_del, "remove",cmd_counter = counter, warning = True)  
                                         if self.DEBUG:
                                             print('Sent remove command here')
                                     else:
@@ -441,11 +428,11 @@ class BleUploader():
                                         file_wrongsize.append(file)
                                         file_wrongsize.append(size_diff)
                                         out_msg_del =json.dumps({"cmd": "remove", "path":"/sd/" + file})
-                                        r_del, counter = cmd_fn(out_msg_del, "remove", show_progress = True, cmd_counter = counter, warning = True)
+                                        r_del, counter = cmd_fn(out_msg_del, "remove", cmd_counter = counter, warning = True)
                                     
                                     if file.endswith('bin'):
                                         counter = counter + 1
-                                        self.progress_bar_.update_progress_bar(counter*.002)
+                                    
                                         break 
                                         # No break and no continue makes it exit and not remove the bin file
                                     elif file.endswith('json'):
@@ -463,7 +450,7 @@ class BleUploader():
                 else:
                     continue
             # Now use FileConverter
-            fc = FileConverter(self.progress_bar_, self.console_box_, file_wrongsize)
+            fc = FileConverter(self.console_box_, file_wrongsize)
             cwd = os.getcwd()
             if self.DEBUG:
                 print('THIS IS THE CURRENT DIR: ' + cwd)
@@ -471,7 +458,7 @@ class BleUploader():
 
             conversion_status = fc.match_files(self.base_dir + '/data_files/uploaded_files', self.base_dir + '/data_files/processed_files', self.base_dir + '/data_files/converted_files', self.base_dir + '/data_files/unpaired_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
-            self.progress_bar_.update_progress_bar(1)
+            
             self.ble_status_icon_.background_color = 'white'
             self.v_['ble_status'].text = ''
             self.d0.alpha =  0
@@ -484,7 +471,7 @@ class BleUploader():
             
             try:
                 out_msg_txt =json.dumps({"cmd":"set_ble_state","active":False})
-                cmd_fn(out_msg_txt, "set_ble_state", show_progress = False, to_max = 50)
+                cmd_fn(out_msg_txt, "set_ble_state", to_max = 20)
             except:
                 if self.DEBUG:
                     print('could not send disconnect command')
@@ -495,7 +482,7 @@ class BleUploader():
             
             try:          
                 out_msg2 =json.dumps({"cmd": "disconnect_ble"})
-                rstring, no_counter = cmd_fn(out_msg2, "disconnect_ble", show_progress = True, to_max = 30)
+                rstring, no_counter = cmd_fn(out_msg2, "disconnect_ble", to_max = 15)
             except:
                 if self.DEBUG:
                     print('could not send disconnect command')
